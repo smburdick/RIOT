@@ -1,0 +1,16 @@
+menuconfig MODULE_CRYPTO_QUANTUM
+    bool "Crypto"
+    depends on TEST_KCONFIG
+
+if MODULE_CRYPTO_QUANTUM
+
+menu "Quantum Resistant Cryptography Options"
+
+config MODULE_CRYPTO_DILITHIUM
+    bool "DILITHIUM"
+
+endmenu
+
+rsource "modes/Kconfig"
+
+endif # Crypto Quantum
