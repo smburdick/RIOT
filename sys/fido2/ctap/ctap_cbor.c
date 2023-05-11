@@ -780,20 +780,11 @@ static int _encode_public_key_cose(CborEncoder *cose_key, const ctap_public_key_
         return CTAP2_ERR_CBOR_PARSING;
     }
 
-    ret = cbor_encode_int(&map, CTAP_COSE_KEY_LABEL_X);
+    ret = cbor_encode_int(&map, CTAP_COSE_KEY_LABEL_PUBKEY);
     if (ret != CborNoError) {
         return CTAP2_ERR_CBOR_PARSING;
     }
-    ret = cbor_encode_byte_string(&map, key->pubkey.x, sizeof(key->pubkey.x));
-    if (ret != CborNoError) {
-        return CTAP2_ERR_CBOR_PARSING;
-    }
-
-    ret = cbor_encode_int(&map, CTAP_COSE_KEY_LABEL_Y);
-    if (ret != CborNoError) {
-        return CTAP2_ERR_CBOR_PARSING;
-    }
-    ret = cbor_encode_byte_string(&map, key->pubkey.y, sizeof(key->pubkey.y));
+    ret = cbor_encode_byte_string(&map, key->pubkey, sizeof(key->pubkey));
     if (ret != CborNoError) {
         return CTAP2_ERR_CBOR_PARSING;
     }
@@ -1231,14 +1222,9 @@ static int _parse_public_key_cose(CborValue *it, ctap_public_key_cose_t *cose_ke
             ret = _parse_int(&map, &cose_key->crv);
             required_parsed++;
             break;
-        case CTAP_COSE_KEY_LABEL_X:
-            len = sizeof(cose_key->pubkey.x);
-            ret = _parse_fixed_len_byte_array(&map, cose_key->pubkey.x, &len);
-            required_parsed++;
-            break;
-        case CTAP_COSE_KEY_LABEL_Y:
-            len = sizeof(cose_key->pubkey.y);
-            ret = _parse_fixed_len_byte_array(&map, cose_key->pubkey.y, &len);
+        case CTAP_COSE_KEY_LABEL_PUBKEY:
+            len = sizeof(cose_key->pubkey);
+            ret = _parse_fixed_len_byte_array(&map, cose_key->pubkey, &len);
             required_parsed++;
             break;
         default:

@@ -31,7 +31,7 @@
 #include "fido2/ctap.h"
 #include "fido2/ctap/ctap_utils.h"
 
-#include "liboqs/dilithium/api.h"
+#include "liboqs/kyber/api.h"
 
 #define ENABLE_DEBUG    (0)
 #include "debug.h"
@@ -144,7 +144,7 @@ int fido2_ctap_crypto_kyber_encap(uint8_t *ss, uint8_t *ct, uint8_t *pk)
     return CTAP2_OK;
 }
 
-int fido2_ctap_crypto_kyber_decap(uint8_t *ss, const uint8_t *ct, const uint8_t *sk)
+int fido2_ctap_crypto_kyber_decap(uint8_t *ss, uint8_t *ct, uint8_t *sk)
 {
     PQCLEAN_KYBER512_AARCH64_crypto_kem_dec(ss, ct, sk);
     return CTAP2_OK;
@@ -279,13 +279,6 @@ int fido2_ctap_crypto_gen_keypair(ctap_crypto_pub_key_t *pub_key,
     return CTAP2_OK;
 }
 
-int fido2_ctap_crypto_gen_keypair_dilithium(uint8_t * pk, size_t pk_len, uint8_t *sk, size_t sk_len)
-{
-    assert(pk_len == PQCLEAN_DILITHIUM2_AARCH64_CRYPTO_PUBLICKEYBYTES);
-    assert(sk_len == PQCLEAN_DILITHIUM2_AARCH64_CRYPTO_SECRETKEYBYTES);
-    PQCLEAN_DILITHIUM2_AARCH64_crypto_sign_keypair(pk, sk);
-    return CTAP2_OK;
-}
 
 int fido2_ctap_crypto_get_sig(uint8_t *hash, size_t hash_len, uint8_t *sig,
                               size_t *sig_len, const uint8_t *key,

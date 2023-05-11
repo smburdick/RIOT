@@ -908,7 +908,7 @@ static int _get_key_agreement(void)
     /* generate key agreement key */
     ret =
         fido2_ctap_crypto_gen_keypair_kyber(_state.ag_key.pub,
-                                            _state.ag_key.priv,);
+                                            _state.ag_key.priv);
 
     if (ret != CTAP2_OK) {
         return ret;
@@ -949,7 +949,9 @@ static int _set_pin(ctap_client_pin_req_t *req)
         goto done;
     }
 
-    ret = fido2_ctap_crypto_kyber_enc(shared_secret, req->key_agreement.pubkey); // TODO: get this from the sender instead.
+    ret = fido2_ctap_crypto_kyber_encap(shared_secret, req->ciphertext,
+                                        req->key_agreement.pubkey);
+
     if (ret != CTAP2_OK)
     {
         goto done;
@@ -1046,10 +1048,10 @@ static int _change_pin(ctap_client_pin_req_t *req)
     }
 
     /* derive shared secret */
-    ret = fido2_ctap_crypto_ecdh(shared_secret, sizeof(shared_secret),
-                                 &req->key_agreement.pubkey, _state.ag_key.priv,
-                                 sizeof(_state.ag_key.priv));
-    if (ret != CTAP2_OK) {
+    ret = fido2_ctap_crypto_kyber_decap(shared_secret, req->ciphertext,
+                                  req->key_agreement.pubkey);
+    if (ret != CTAP2_OK)
+    {
         goto done;
     }
 
@@ -1111,8 +1113,8 @@ static int _change_pin(ctap_client_pin_req_t *req)
 
         /* reset key agreement key */
         ret =
-            fido2_ctap_crypto_gen_keypair_kyber(&_state.ag_key.pub, _state.ag_key.priv,
-                                          sizeof(_state.ag_key.priv));
+            fido2_ctap_crypto_gen_keypair_kyber(_state.ag_key.pub,
+                                                _state.ag_key.priv);
 
         if (ret != CTAP2_OK) {
             goto done;
@@ -1525,7 +1527,7 @@ static int _make_auth_data_attest(ctap_make_credential_req_t *req,
     memcpy(cred_header->aaguid, aaguid, sizeof(cred_header->aaguid));
 
     ret =
-        fido2_ctap_crypto_gen_keypair_kyber(&cred_data->key.pubkey, k->priv_key);
+        fido2_ctap_crypto_gen_keypair_kyber(cred_data->key.pubkey, k->priv_key);
 
     if (ret != CTAP2_OK) {
         return ret;

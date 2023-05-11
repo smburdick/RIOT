@@ -190,7 +190,7 @@ int fido2_ctap_crypto_gen_keypair(ctap_crypto_pub_key_t *pub_key,
  * @brief generate keypais using Kyber
 */
 int fido2_ctap_crypto_gen_keypair_kyber(uint8_t *pk, uint8_t *sk);
-int fido2_ctap_crypto_kyber_encap(uint8_t *ss, uint8_t *ct, uint8_t *pk)
+int fido2_ctap_crypto_kyber_encap(uint8_t *ss, uint8_t *ct, uint8_t *pk);
 int fido2_ctap_crypto_kyber_decap(uint8_t *ss, uint8_t *ct, uint8_t *pk);
 
 /**

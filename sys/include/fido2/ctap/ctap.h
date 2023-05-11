@@ -342,8 +342,7 @@ extern "C" {
 #define CTAP_COSE_KEY_LABEL_KTY      1  /**< key type identifier */
 #define CTAP_COSE_KEY_LABEL_ALG      3  /**< algorithm identifier */
 #define CTAP_COSE_KEY_LABEL_CRV      -1 /**< elliptic curve identifier */
-#define CTAP_COSE_KEY_LABEL_X        -2 /**< x coordinate */
-#define CTAP_COSE_KEY_LABEL_Y        -3 /**< y coordinate */
+#define CTAP_COSE_KEY_LABEL_PUBKEY   -2 /**< x coordinate */
 #define CTAP_COSE_KEY_KTY_EC2        2  /**< 2 coordinate elliptic curve key identifier */
 #define CTAP_COSE_KEY_CRV_P256       1  /**< secp256r1 elliptic curve key identifier */
 /** @} */
@@ -463,7 +462,7 @@ typedef struct {
  * https://www.iana.org/assignments/cose/cose.xhtml
  */
 typedef struct {
-    uint8_t pubkey[];   /**< public key */
+    uint8_t pubkey[CTAP_CRYPTO_KEY_SIZE]; /**< public key */
     // TODO: deprecate these other fields?
     int kty;                        /**< identification of key type */
     int crv;                        /**< EC identifier */
