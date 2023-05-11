@@ -463,7 +463,8 @@ typedef struct {
  * https://www.iana.org/assignments/cose/cose.xhtml
  */
 typedef struct {
-    ctap_crypto_pub_key_t pubkey;   /**< public key */
+    uint8_t pubkey[];   /**< public key */
+    // TODO: deprecate these other fields?
     int kty;                        /**< identification of key type */
     int crv;                        /**< EC identifier */
     int32_t alg_type;               /**< COSEAlgorithmIdentifier */
@@ -577,6 +578,8 @@ typedef struct {
     bool pin_hash_enc_present;                                  /**< indicate pin_hash_enc is present */
     bool pin_auth_present;                                      /**< indicate if pin_auth present */
     bool key_agreement_present;                                 /**< indicate if key_agreement present */
+    uint8_t *ciphertext; // TODO: used for key encapsulation
+    bool ciphertext_present;
 } ctap_client_pin_req_t;
 
 /**

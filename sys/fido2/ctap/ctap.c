@@ -902,20 +902,19 @@ static int _get_retries(void)
 static int _get_key_agreement(void)
 {
     int ret;
-    ctap_public_key_cose_t key = { 0 };
+    ctap_public_key_cose_t key = { 0 }; // TODO: for our purposes, this can just be the key?
 
 
     /* generate key agreement key */
     ret =
-        fido2_ctap_crypto_gen_keypair(&_state.ag_key.pub, _state.ag_key.priv,
-                                      sizeof(_state.ag_key.priv));
+        fido2_ctap_crypto_gen_keypair_kyber(_state.ag_key.pub,
+                                            _state.ag_key.priv,);
 
     if (ret != CTAP2_OK) {
         return ret;
     }
 
-    memcpy(key.pubkey.x, _state.ag_key.pub.x, CTAP_CRYPTO_KEY_SIZE);
-    memcpy(key.pubkey.y, _state.ag_key.pub.y, CTAP_CRYPTO_KEY_SIZE);
+    memcpy(key.pubkey, _state.ag_key.pub, CTAP_CRYPTO_KEY_SIZE);
 
     key.alg_type = CTAP_COSE_ALG_ECDH_ES_HKDF_256;
     key.cred_type = CTAP_PUB_KEY_CRED_PUB_KEY;
@@ -950,18 +949,17 @@ static int _set_pin(ctap_client_pin_req_t *req)
         goto done;
     }
 
-    ret = fido2_ctap_crypto_ecdh(shared_secret, sizeof(shared_secret),
-                                 &req->key_agreement.pubkey, _state.ag_key.priv,
-                                 sizeof(_state.ag_key.priv));
-
-    if (ret != CTAP2_OK) {
+    ret = fido2_ctap_crypto_kyber_enc(shared_secret, req->key_agreement.pubkey); // TODO: get this from the sender instead.
+    if (ret != CTAP2_OK)
+    {
         goto done;
     }
 
     /* sha256 of shared secret ((abG).x) to obtain shared key */
     ret = fido2_ctap_crypto_sha256(shared_secret, sizeof(shared_secret), shared_key);
 
-    if (ret != CTAP2_OK) {
+    if (ret != CTAP2_OK)
+    {
         goto done;
     }
 
@@ -1113,7 +1111,7 @@ static int _change_pin(ctap_client_pin_req_t *req)
 
         /* reset key agreement key */
         ret =
-            fido2_ctap_crypto_gen_keypair(&_state.ag_key.pub, _state.ag_key.priv,
+            fido2_ctap_crypto_gen_keypair_kyber(&_state.ag_key.pub, _state.ag_key.priv,
                                           sizeof(_state.ag_key.priv));
 
         if (ret != CTAP2_OK) {
@@ -1184,14 +1182,13 @@ static int _get_pin_token(ctap_client_pin_req_t *req)
         goto done;
     }
 
-    if (!req->key_agreement_present || !req->pin_hash_enc_present) {
+    if (!req->key_agreement_present || !req->pin_hash_enc_present || !req->ciphertext_present) {
         ret = CTAP2_ERR_MISSING_PARAMETER;
         goto done;
     }
 
-    ret = fido2_ctap_crypto_ecdh(shared_secret, sizeof(shared_secret),
-                                 &req->key_agreement.pubkey, _state.ag_key.priv,
-                                 sizeof(_state.ag_key.priv));
+    // TODO: get shared key via kyber
+    ret = fido2_ctap_crypto_kyber_decap(shared_secret, req->ciphertext, _state.ag_key.priv);
 
     if (ret != CTAP2_OK) {
         goto done;
@@ -1226,9 +1223,8 @@ static int _get_pin_token(ctap_client_pin_req_t *req)
         DEBUG("fido2_ctap: _get_pin_token - invalid pin \n");
 
         /* reset key agreement key */
-        ret =
-            fido2_ctap_crypto_gen_keypair(&_state.ag_key.pub, _state.ag_key.priv,
-                                          sizeof(_state.ag_key.priv));
+        ret = fido2_ctap_crypto_gen_keypair_kyber(_state.ag_key.pub,
+                                                  _state.ag_key.priv);
 
         if (ret != CTAP2_OK) {
             goto done;
@@ -1529,8 +1525,7 @@ static int _make_auth_data_attest(ctap_make_credential_req_t *req,
     memcpy(cred_header->aaguid, aaguid, sizeof(cred_header->aaguid));
 
     ret =
-        fido2_ctap_crypto_gen_keypair(&cred_data->key.pubkey, k->priv_key,
-                                      sizeof(_state.ag_key.priv));
+        fido2_ctap_crypto_gen_keypair_kyber(&cred_data->key.pubkey, k->priv_key);
 
     if (ret != CTAP2_OK) {
         return ret;

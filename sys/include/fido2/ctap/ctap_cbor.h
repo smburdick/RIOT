@@ -201,6 +201,8 @@ extern "C" {
 #define CTAP_CBOR_CP_REQ_PIN_AUTH        0x04   /**< pinAuth key value */
 #define CTAP_CBOR_CP_REQ_NEW_PIN_ENC     0x05   /**< newPinEnc key value */
 #define CTAP_CBOR_CP_REQ_PIN_HASH_ENC    0x06   /**< pinHashEnc key value */
+#define CTAP_CBOR_CP_REQ_CYPHERTEXT      0x07   /**< cyphertext key value */
+
 /** @} */
 
 /**

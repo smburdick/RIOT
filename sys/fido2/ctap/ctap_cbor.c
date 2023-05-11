@@ -1019,6 +1019,12 @@ int fido2_ctap_cbor_parse_client_pin_req(ctap_client_pin_req_t *req,
             ret = _parse_fixed_len_byte_array(&map, req->pin_hash_enc, &len);
             req->pin_hash_enc_present = true;
             break;
+        case CTAP_CBOR_CP_REQ_CYPHERTEXT:
+            // TODO: debug()
+            len = sizeof(req->ciphertext);
+            ret = _parse_fixed_len_byte_array(&map, req->ciphertext, &len); // TODO: what is the map and how does it work?
+            req->ciphertext_present = true;
+            break;
         default:
             DEBUG("parse_client_pin unknown key: %d \n", key);
             break;
