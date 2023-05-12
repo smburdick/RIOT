@@ -339,6 +339,7 @@ extern "C" {
  *
  * @{
  */
+// TODO: remove these constants altogether if we aren't using ECC
 #define CTAP_COSE_KEY_LABEL_KTY      1  /**< key type identifier */
 #define CTAP_COSE_KEY_LABEL_ALG      3  /**< algorithm identifier */
 #define CTAP_COSE_KEY_LABEL_CRV      -1 /**< elliptic curve identifier */

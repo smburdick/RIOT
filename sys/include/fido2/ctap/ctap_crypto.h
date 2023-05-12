@@ -26,6 +26,7 @@
 #include <stdint.h>
 
 #include "hashes/sha256.h"
+#include "liboqs/kyber/api.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -50,12 +51,12 @@ typedef struct {
 } ctap_crypto_pub_key_t;
 
 /**
- * @brief Key agreement key, for Kyber
+ * @brief Key agreement key, for Kyber/Dilithium
  *
  */
 typedef struct {
     uint8_t pub[CTAP_CRYPTO_KEY_SIZE];          /**< public key */
-    uint8_t priv[CTAP_CRYPTO_KEY_SIZE]; /**< private key */
+    uint8_t priv[CTAP_CRYPTO_KEY_SIZE];         /**< private key */
 } ctap_crypto_key_agreement_key_t;
 
 /**
