@@ -12,7 +12,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <oqs/common.h>
+#include "../../common/common.h"
 
 #if defined(__cplusplus)
 extern "C" {

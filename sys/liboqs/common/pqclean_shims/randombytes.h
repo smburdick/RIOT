@@ -3,7 +3,7 @@
 #ifndef RANDOMBYTES_H
 #define RANDOMBYTES_H
 
-#include <oqs/rand.h>
+#include "../rand/rand.h"
 
 #define randombytes OQS_randombytes
 

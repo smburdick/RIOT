@@ -3,7 +3,7 @@
 #ifndef FIPS202_H
 #define FIPS202_H
 
-#include <oqs/sha3.h>
+#include "../sha3/sha3.h"
 
 #define SHAKE128_RATE OQS_SHA3_SHAKE128_RATE
 #define shake128 OQS_SHA3_shake128

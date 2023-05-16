@@ -13,7 +13,8 @@
 
 #include <oqs/oqsconfig.h>
 
-#include <oqs/common.h>
+#include "common/common.h"
+
 #include <oqs/aes.h>
 #include <oqs/sha2.h>
 #include <oqs/sha3.h>

@@ -5,7 +5,7 @@
 #include <arm_neon.h>
 #include <stddef.h>
 
-#include "fips202.h"
+#include "../../common/common.h"
 
 typedef uint64x2_t v128;
 

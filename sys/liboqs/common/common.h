@@ -13,7 +13,9 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include <oqs/oqsconfig.h>
+#include "../oqsconfig.h"
+#include "pqclean_shims/fips202.h"
+#include "pqclean_shims/randombytes.h"
 
 #if defined(__cplusplus)
 extern "C" {

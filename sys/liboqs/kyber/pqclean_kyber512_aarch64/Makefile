@@ -6,6 +6,8 @@ OBJECTS=cbd.o fips202x2.o indcpa.o kem.o neon_poly.o neon_polyvec.o neon_symmetr
 
 CFLAGS=-O3 -Wall -Wextra -Wpedantic -Werror -Wmissing-prototypes -Wredundant-decls -std=c99 -I../../../common $(EXTRAFLAGS)
 
+CC=aarch64-linux-gnu-gcc
+
 all: $(LIB)
 
 %.o: %.c $(HEADERS)
