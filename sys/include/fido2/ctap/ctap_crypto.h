@@ -26,6 +26,7 @@
 #include <stdint.h>
 
 #include "hashes/sha256.h"
+#include "liboqs/kyber/api.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -50,13 +51,12 @@ typedef struct {
 } ctap_crypto_pub_key_t;
 
 /**
- * @brief Key agreement key
+ * @brief Key agreement key, for Kyber/Dilithium
  *
- * CTAP specification (version 20190130) section 5.5.4
  */
 typedef struct {
-    ctap_crypto_pub_key_t pub;          /**< public key */
-    uint8_t priv[CTAP_CRYPTO_KEY_SIZE]; /**< private key */
+    uint8_t pub[CTAP_CRYPTO_KEY_SIZE];          /**< public key */
+    uint8_t priv[CTAP_CRYPTO_KEY_SIZE];         /**< private key */
 } ctap_crypto_key_agreement_key_t;
 
 /**
@@ -184,7 +184,15 @@ int fido2_ctap_crypto_hmac_sha256(const void *key,
  *
  * @return @ref ctap_status_codes_t
  */
-int fido2_ctap_crypto_gen_keypair(ctap_crypto_pub_key_t *pub_key, uint8_t *priv_key, size_t len);
+int fido2_ctap_crypto_gen_keypair(ctap_crypto_pub_key_t *pub_key,
+                                  uint8_t *priv_key, size_t len);
+
+/**
+ * @brief generate keypais using Kyber
+*/
+int fido2_ctap_crypto_gen_keypair_kyber(uint8_t *pk, uint8_t *sk);
+int fido2_ctap_crypto_kyber_encap(uint8_t *ss, uint8_t *ct, uint8_t *pk);
+int fido2_ctap_crypto_kyber_decap(uint8_t *ss, uint8_t *ct, uint8_t *pk);
 
 /**
  * @brief Elliptic-curve Diffie-Hellmann

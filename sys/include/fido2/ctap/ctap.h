@@ -339,11 +339,11 @@ extern "C" {
  *
  * @{
  */
+// TODO: remove these constants altogether if we aren't using ECC
 #define CTAP_COSE_KEY_LABEL_KTY      1  /**< key type identifier */
 #define CTAP_COSE_KEY_LABEL_ALG      3  /**< algorithm identifier */
 #define CTAP_COSE_KEY_LABEL_CRV      -1 /**< elliptic curve identifier */
-#define CTAP_COSE_KEY_LABEL_X        -2 /**< x coordinate */
-#define CTAP_COSE_KEY_LABEL_Y        -3 /**< y coordinate */
+#define CTAP_COSE_KEY_LABEL_PUBKEY   -2 /**< x coordinate */
 #define CTAP_COSE_KEY_KTY_EC2        2  /**< 2 coordinate elliptic curve key identifier */
 #define CTAP_COSE_KEY_CRV_P256       1  /**< secp256r1 elliptic curve key identifier */
 /** @} */
@@ -463,7 +463,8 @@ typedef struct {
  * https://www.iana.org/assignments/cose/cose.xhtml
  */
 typedef struct {
-    ctap_crypto_pub_key_t pubkey;   /**< public key */
+    uint8_t pubkey[CTAP_CRYPTO_KEY_SIZE]; /**< public key */
+    // TODO: deprecate these other fields?
     int kty;                        /**< identification of key type */
     int crv;                        /**< EC identifier */
     int32_t alg_type;               /**< COSEAlgorithmIdentifier */
@@ -577,6 +578,8 @@ typedef struct {
     bool pin_hash_enc_present;                                  /**< indicate pin_hash_enc is present */
     bool pin_auth_present;                                      /**< indicate if pin_auth present */
     bool key_agreement_present;                                 /**< indicate if key_agreement present */
+    uint8_t *ciphertext; // TODO: used for key encapsulation
+    bool ciphertext_present;
 } ctap_client_pin_req_t;
 
 /**
