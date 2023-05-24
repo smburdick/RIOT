@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include <oqs/aes.h>
+#include "aes.h"
 
 #define AES256_KEYBYTES 32
 #define AESCTR_NONCEBYTES 12

@@ -5,7 +5,7 @@
 #include <arm_neon.h>
 #include <stddef.h>
 
-#include "pqclean_shims/fips202.h"
+#include "fips202.h"
 
 typedef uint64x2_t v128;
 

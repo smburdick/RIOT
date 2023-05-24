@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <oqs/oqs.h>
+#include "oqs.h"
 
 #ifdef OQS_USE_SHA3_OPENSSL
 

@@ -4,7 +4,7 @@
 #include "params.h"
 #include "poly.h"
 #include "polyvec.h"
-#include "pqclean_shims/randombytes.h"
+#include "randombytes.h"
 #include "rejsample.h"
 #include "symmetric.h"
 #include <stddef.h>

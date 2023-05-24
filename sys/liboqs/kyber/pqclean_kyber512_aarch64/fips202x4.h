@@ -3,7 +3,7 @@
 #ifndef FIPS202X4_H
 #define FIPS202X4_H
 
-#include <oqs/sha3x4.h>
+#include "sha3x4.h"
 
 #define shake128x4incctx OQS_SHA3_shake128_x4_inc_ctx
 #define shake128x4_inc_init OQS_SHA3_shake128_x4_inc_init
