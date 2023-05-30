@@ -5,8 +5,16 @@
     "editor.detectIndentation": false,
     "files.insertFinalNewline": true,
     "files.associations": {
+        "*.json.liquid": "json",
+        "*.yaml.liquid": "yaml",
+        "*.md.liquid": "markdown",
+        "*.js.liquid": "liquid-javascript",
+        "*.css.liquid": "liquid-css",
+        "*.scss.liquid": "liquid-scss",
         "Makefile.*": "makefile",
-        "*.mk": "makefile"
+        "*.mk": "makefile",
+        "random": "c",
+        "rand.h": "c"
     },
     "[shellscript][c][cpp]": {
         "editor.tabSize": 4,
